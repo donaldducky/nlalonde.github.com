@@ -10,6 +10,17 @@ $(function(){
   $('#repo-owner').text(params.owner);
   $('#repo-name').text(params.repo);
 
+  if( params.width ) {
+    $('.widget-container').css('width', params.width + 'px');
+  }
+  if( params.height ) {
+    $('.widget-container').css('height', params.height + 'px');
+    $('.widget-container .commits-list').css('height', (params.height - 31) + 'px');
+  }
+  if( params.heading ) {
+    $('.widget-container h1').text( decodeURIComponent(params.heading) );
+  }
+
   $('.widget-container .header').click(function(){
     window.open('https://github.com/' + params.owner + '/' + params.repo);
   });
@@ -24,9 +35,8 @@ $(function(){
       var data = response.data;
       console.log(data);
       $.each(data, function(i, commit){
-        // https://github.com/" + params.owner + "/" + params.repo + "/commit/" + commit.sha
         var $li = $('<li></li>').appendTo( $commitsList );
-        $('<div class="left"><img src="https://www.gravatar.com/avatar/' + commit.author.gravatar_id + '.png?s=32&r=pg&d=identicon"></div>').appendTo( $li );
+        $('<div class="left"><img src="https://www.gravatar.com/avatar/' + commit.author.gravatar_id + '.png?s=38&r=pg&d=identicon"></div>').appendTo( $li );
         $right = $('<div class="right"></div>').appendTo( $li );
         $('<span class="commit-message"><a href="https://github.com/' + params.owner + '/' + params.repo + '/commit/' + commit.sha + '" target="_blank">' + commit.commit.message + '</a></span><br/>').appendTo( $right );
         $('<span class="commit-meta">by <span class="committer-name">' + commit.committer.login + '</span> - <span class="commit-time">' + $.timeago(commit.commit.committer.date) + '</span></span>').appendTo( $right );
