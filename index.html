@@ -12,9 +12,16 @@
 
 <body>
 
-  <div id="content-here">Loading...</div>
+  <div class="widget-container">
+    <div class="header">
+      <div class="github-icon"></div>
+      <h1>Latest Commits to <span id="repo-owner"></span>/<span id="repo-name"></span></h4>
+    </div>
+    <ul class="commits-list"></ul>
+  </div>
 
   <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-  <script src="/javascripts/main.js"></script>
+  <script src="javascripts/jquery.timeago.js"></script>
+  <script src="javascripts/main.js"></script>
 </body>
 </html>

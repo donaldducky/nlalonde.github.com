@@ -1,3 +1,37 @@
 $(function(){
-  $('#content-here').html('Success!');
+  var $commitsList = $('.commits-list');
+  var keyValuePairs = window.location.href.slice(window.location.href.indexOf("?") + 1).split("&");
+  var x, params = {};
+  $.each(keyValuePairs, function(i, keyValue){
+    x = keyValue.split('=');
+    params[x[0]] = x[1];
+  });
+
+  $('#repo-owner').text(params.owner);
+  $('#repo-name').text(params.repo);
+
+  $('.widget-container .header').click(function(){
+    window.open('https://github.com/' + params.owner + '/' + params.repo);
+  });
+
+  $.ajax( "https://api.github.com/repos/" + params.owner + "/" + params.repo + "/commits?callback=callback", {
+    dataType: 'jsonp',
+    type: 'get',
+    data: {
+      per_page: params.limit || 10
+    },
+    success: function(response, textStatus, jqXHR) {
+      var data = response.data;
+      console.log(data);
+      $.each(data, function(i, commit){
+        // https://github.com/" + params.owner + "/" + params.repo + "/commit/" + commit.sha
+        var $li = $('<li></li>').appendTo( $commitsList );
+        $('<div class="left"><img src="https://www.gravatar.com/avatar/' + commit.author.gravatar_id + '.png?s=32&r=pg&d=identicon"></div>').appendTo( $li );
+        $right = $('<div class="right"></div>').appendTo( $li );
+        $('<span class="commit-message"><a href="https://github.com/' + params.owner + '/' + params.repo + '/commit/' + commit.sha + '" target="_blank">' + commit.commit.message + '</a></span><br/>').appendTo( $right );
+        $('<span class="commit-meta">by <span class="committer-name">' + commit.committer.login + '</span> - <span class="commit-time">' + $.timeago(commit.commit.committer.date) + '</span></span>').appendTo( $right );
+        $('<div class="clearfix"></div>').appendTo( $li );
+      });
+    }
+  });
 });
