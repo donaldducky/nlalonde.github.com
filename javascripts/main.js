@@ -33,7 +33,6 @@ $(function(){
     },
     success: function(response, textStatus, jqXHR) {
       var data = response.data;
-      console.log(data);
       $.each(data, function(i, commit){
         var $li = $('<li></li>').appendTo( $commitsList );
         $('<div class="left"><img src="https://www.gravatar.com/avatar/' + commit.author.gravatar_id + '.png?s=38&r=pg&d=identicon"></div>').appendTo( $li );
